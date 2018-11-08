@@ -1,0 +1,86 @@
+class Game:
+    def __init__(self):
+        self.game_data = ["1","2","3","4","5","6","7","8","9"]
+        self.symbol1 = "O"
+        self.symbol2 = "X"
+
+    def game_display(self):
+        """
+        显示界面
+        :return:
+        """
+        print("%s\t|\t%s\t|\t%s" % (self.game_data[0],self.game_data[1],self.game_data[2]))
+        print("%s\t|\t%s\t|\t%s" % (self.game_data[3],self.game_data[4],self.game_data[5]))
+        print("%s\t|\t%s\t|\t%s" % (self.game_data[6],self.game_data[7],self.game_data[8]))
+
+    def game_choice_position(self, position_num, symbol):
+        """
+        位置选择
+        :param position_num: 位置序号
+        :param symbol: 标记
+        :return:
+        """
+        self.game_data[position_num - 1] = symbol
+        self.game_display()
+        self.line()
+
+
+    def num(self, num):
+        """
+        检测位置正确
+        :param num:
+        :return:
+        """
+        if num not in [1,2,3,4,5,6,7,8,9]:
+            return self.num(int(input("输入错误请重新输入")))
+
+        elif self.game_data[num - 1] == "O":
+            return self.num(int(input("位置已被占据，请重新输入")))
+
+        elif self.game_data[num - 1] == "X":
+            return self.num(int(input("位置已被占据，请重新输入")))
+
+        else:
+            return num
+    def line(self):
+        """
+        成线判断
+        :return:
+        """
+        for i in [0,3,6]:
+            if self.game_data[i] == self.game_data [i+1] == self.game_data [i+2]:
+                self.winner(i)
+        for i in [0,1,2]:
+            if self.game_data[i] == self.game_data[i + 3] == self.game_data[i + 6]:
+                self.winner(i)
+        if self.game_data[0] == self.game_data[4] == self.game_data[8]:
+            self.winner(0)
+        if self.game_data[2] == self.game_data[4] == self.game_data[6]:
+            self.winner(2)
+    def winner(self, num):
+        """
+        胜利者判断
+        :param num:
+        :return:
+        """
+        if self.game_data[num] == self.symbol1:
+            print("玩家1胜利")
+            exit()
+        elif self.game_data[num] == self.symbol2:
+            print("玩家2胜利")
+            exit()
+
+new_game = Game()
+new_game.game_display()
+i = 0
+while i < 9:
+    if i%2 == 0:
+        num = new_game.num(int(input("玩家1输入位置")))
+        new_game.game_choice_position(num, new_game.symbol1)
+
+    elif i%2 == 1:
+        num = new_game.num(int(input("玩家2输入位置")))
+        new_game.game_choice_position(num, new_game.symbol2)
+    i += 1
+
+print("draw")
